@@ -1,18 +1,24 @@
 <?xml version="1.0"?>
 <config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:Event/etc/events.xsd">
     <!-- <event name="checkout_onepage_controller_success_action">
-        <observer name="fgc_checkout_onepage_controller_success_action" instance="Goretail\ExtraOrderHistory\Observer\SalesOrderAfterSave" />
+        <observer name="fgc_checkout_onepage_controller_success_action" instance="Goretail\ExtraOrderHistory\Observer\AddComment" />
     </event> -->
     <!-- <event name="sales_order_place_after">
-        <observer name="fgc_sales_order_place_after" instance="Goretail\ExtraOrderHistory\Observer\SalesOrderAfterSave" />
+        <observer name="fgc_sales_order_place_after" instance="Goretail\ExtraOrderHistory\Observer\AddComment" />
     </event> -->
-    <event name="sales_order_save_after">
-        <observer name="fgc_sales_order_save_after" instance="Goretail\ExtraOrderHistory\Observer\SalesOrderAfterSave" />
+    <event name="sales_order_save_after"> <!-- <event name="order_cancel_after"> -->
+        <observer name="fgc_sales_order_save_after" instance="Goretail\ExtraOrderHistory\Observer\AddComment" />
     </event>
-    <!-- <event name="order_cancel_after">
-        <observer name="fgc_order_cancel_after" instance="Goretail\ExtraOrderHistory\Observer\SalesOrderAfterSave" />
-    </event> -->
+
     <event name="sales_order_delete_after">
-        <observer name="fgc_sales_order_delete_after" instance="Goretail\ExtraOrderHistory\Observer\SalesOrderAfterSave" />
+        <observer name="fgc_sales_order_delete_after" instance="Goretail\ExtraOrderHistory\Observer\AddComment" />
+    </event>
+
+    <event name="sales_order_invoice_save_after">
+        <observer name="fgc_sales_order_invoice_save_after" instance="Goretail\ExtraOrderHistory\Observer\AddComment" />
+    </event>
+
+    <event name="sales_order_shipment_save_after">
+        <observer name="fgc_sales_order_shipment_save_after" instance="Goretail\ExtraOrderHistory\Observer\AddComment" />
     </event>
 </config>

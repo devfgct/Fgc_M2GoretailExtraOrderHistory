@@ -9,9 +9,9 @@
     <event name="sales_order_save_after">
         <observer name="fgc_sales_order_save_after" instance="Goretail\ExtraOrderHistory\Observer\SalesOrderAfterSave" />
     </event>
-    <event name="order_cancel_after">
+    <!-- <event name="order_cancel_after">
         <observer name="fgc_order_cancel_after" instance="Goretail\ExtraOrderHistory\Observer\SalesOrderAfterSave" />
-    </event>
+    </event> -->
     <event name="sales_order_delete_after">
         <observer name="fgc_sales_order_delete_after" instance="Goretail\ExtraOrderHistory\Observer\SalesOrderAfterSave" />
     </event>

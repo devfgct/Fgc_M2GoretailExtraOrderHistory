@@ -42,7 +42,10 @@ class AddComment implements ObserverInterface {
 		if ($order instanceof \Magento\Framework\Model\AbstractModel) {
 			$origData = $order->getOrigData();
 			$data = $order->getData();
+			$state = $order->getState();
 			if(!$origData || ($origData['state'] != $data['state'])) {
+				if(isset($origData['state']) && $origData['state']=='holded') $state = 'unhold';
+
 				if(!$origData) {
 					$message = __(
 						'Order #%1 created by %2.',
@@ -53,12 +56,10 @@ class AddComment implements ObserverInterface {
 					$message = __(
 						'Order #%1 changed status to %2 by %3.',
 						$order->getIncrementId(),
-						$order->getState(),
+						$state,
 						$by
 					);
 				}
-
-
 			}
 		} elseif (($invoice instanceof \Magento\Framework\Model\AbstractModel) && $orderId) {
 			$order = $objectManager->create('\Magento\Sales\Model\Order')->load($orderId);
@@ -77,7 +78,7 @@ class AddComment implements ObserverInterface {
 		}
 		if($order && $order->getEntityId() && isset($message)) {
 			$comment = $order->addStatusHistoryComment($message)->setIsCustomerNotified(false)->setEntityName('order');
-			if($order->getState() == 'new') {
+			if($order->getState() == 'new' && !$order->getOrigData()) {
 				$comment->setIsVisibleOnFront(true);
 			}
 			$comment->save();

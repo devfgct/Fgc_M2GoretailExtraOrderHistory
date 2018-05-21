@@ -65,14 +65,14 @@ class AddComment implements ObserverInterface {
 			$message = __(
 				'Order #%1 has created invoice by %2.',
 				$order->getIncrementId(),
-				$this->_authSession->getUser()->getUsername()
+				$by
 			);
 		} elseif (($shipment instanceof \Magento\Framework\Model\AbstractModel) && $orderId) {
 			$order = $objectManager->create('\Magento\Sales\Model\Order')->load($orderId);
 			$message = __(
 				'Order #%1 has created shipment by %2.',
 				$order->getIncrementId(),
-				$this->_authSession->getUser()->getUsername()
+				$by
 			);
 		}
 		if($order && $order->getEntityId() && isset($message)) {

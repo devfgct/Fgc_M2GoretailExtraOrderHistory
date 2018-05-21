@@ -26,18 +26,23 @@ class AddComment implements ObserverInterface {
 		$order = $event->getOrder();
 		$invoice = $observer->getEvent()->getInvoice();
 		$shipment = $observer->getEvent()->getShipment();
+
+		$design = $objectManager->create('\Magento\Framework\View\DesignInterface');
+		$area = $design->getArea();
+		if($area=='adminhtml') {
+			$by = $this->_authSession->getUser()->getUsername();
+		} else {
+			/* if($order->getCustomerIsGuest()) {
+				$by = 'Customer'; //$by = $order->getCustomerEmail(); // 'Guest';
+			} elseif($this->_customerSession->isLoggedIn()) {
+				$by = 'Customer'; //$this->_customerSession->getCustomer()->getName();
+			} */
+			$by = 'Customer';
+		}
 		if ($order instanceof \Magento\Framework\Model\AbstractModel) {
 			$origData = $order->getOrigData();
 			$data = $order->getData();
 			if(!$origData || ($origData['state'] != $data['state'])) {
-				if($order->getCustomerIsGuest()) {
-					$by = 'Customer'; //$by = $order->getCustomerEmail(); // 'Guest';
-				} elseif($this->_customerSession->isLoggedIn()) {
-					$by = 'Customer'; //$this->_customerSession->getCustomer()->getName();
-				} else {
-					$by = $this->_authSession->getUser()->getUsername();
-				}
-
 				if($order->getState() == 'new') {
 					$message = __(
 						'Order #%1 created by %2.',

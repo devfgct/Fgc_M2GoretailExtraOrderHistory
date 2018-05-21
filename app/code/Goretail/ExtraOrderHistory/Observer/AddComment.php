@@ -20,11 +20,12 @@ class AddComment implements ObserverInterface {
     public function execute(\Magento\Framework\Event\Observer $observer) {
 		$objectManager = \Magento\Framework\App\ObjectManager::getInstance();
 		$event = $observer->getEvent();
-		//$customer = $event->getCustomer();
-		//$eventName = $event->getName();
+		$orderId = $this->_request->getParam('order_id');
+		$eventName = $event->getName();
 		//$eventData = $event->getData();
 		$order = $event->getOrder();
 		$invoice = $observer->getEvent()->getInvoice();
+		$shipment = $observer->getEvent()->getShipment();
 		if ($order instanceof \Magento\Framework\Model\AbstractModel) {
 			$origData = $order->getOrigData();
 			$data = $order->getData();
@@ -54,10 +55,17 @@ class AddComment implements ObserverInterface {
 
 
 			}
-		} elseif (($invoice instanceof \Magento\Framework\Model\AbstractModel) && ($orderId = $this->_request->getParam('order_id'))) {
+		} elseif (($invoice instanceof \Magento\Framework\Model\AbstractModel) && $orderId) {
 			$order = $objectManager->create('\Magento\Sales\Model\Order')->load($orderId);
 			$message = __(
 				'Order #%1 has created invoice by %2.',
+				$order->getIncrementId(),
+				$this->_authSession->getUser()->getUsername()
+			);
+		} elseif (($shipment instanceof \Magento\Framework\Model\AbstractModel) && $orderId) {
+			$order = $objectManager->create('\Magento\Sales\Model\Order')->load($orderId);
+			$message = __(
+				'Order #%1 has created shipment by %2.',
 				$order->getIncrementId(),
 				$this->_authSession->getUser()->getUsername()
 			);

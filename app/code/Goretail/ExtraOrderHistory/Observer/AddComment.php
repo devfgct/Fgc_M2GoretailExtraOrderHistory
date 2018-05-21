@@ -43,7 +43,7 @@ class AddComment implements ObserverInterface {
 			$origData = $order->getOrigData();
 			$data = $order->getData();
 			if(!$origData || ($origData['state'] != $data['state'])) {
-				if($order->getState() == 'new') {
+				if($order->getState() == 'new' && (!$origData || !isset($origData['state']))) {
 					$message = __(
 						'Order #%1 created by %2.',
 						$order->getIncrementId(),

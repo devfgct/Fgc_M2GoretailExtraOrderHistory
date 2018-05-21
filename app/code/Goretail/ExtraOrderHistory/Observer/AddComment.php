@@ -31,7 +31,7 @@ class AddComment implements ObserverInterface {
 			$data = $order->getData();
 			if(!$origData || ($origData['state'] != $data['state'])) {
 				if($order->getCustomerIsGuest()) {
-					$by = $order->getCustomerEmail(); // 'Guest';
+					$by = 'Customer'; //$by = $order->getCustomerEmail(); // 'Guest';
 				} elseif($this->_customerSession->isLoggedIn()) {
 					$by = 'Customer'; //$this->_customerSession->getCustomer()->getName();
 				} else {
